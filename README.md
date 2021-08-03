@@ -12,6 +12,7 @@ Backend:
  - Spring Web
  - Spring Data JPA (Hibernate) e Bean Validation
  - Spring Security e JWT
+ - Swagger
  - Maven
  - Postgres (dockerized)
 
