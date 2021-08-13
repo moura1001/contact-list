@@ -1,6 +1,6 @@
-# Spring Boot + Postgres + React
+# Dockerized: Spring Boot + Postgres + React
 
-Projeto de uma lista de contatos com banco de dados executado num contêiner docker.
+Projeto de uma lista de contatos com backend e frontend executados em contêineres docker.
 
 ## Sobre o projeto
 
@@ -14,7 +14,7 @@ Backend:
  - Spring Security e JWT
  - Swagger
  - Maven
- - Postgres (dockerized)
+ - Postgres
 
 Frontend:
  - JavaScript

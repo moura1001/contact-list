@@ -1,15 +1,33 @@
 version: "3"
 
 services:
+  backend:
+    build:
+      context: ./backend/demo
+      dockerfile: Dockerfile-spring-boot
+    ports:
+      - "8080:8080"
+    depends_on: 
+      - postgresdb
+
   postgresdb:
     build:
       context: ./backend/database
       dockerfile: Dockerfile-postgres
-    ports:
-      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+#  postgresdb-test:
+#    build:
+#      context: ./backend/database
+#      dockerfile: Dockerfile-postgres-test
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - postgres-data-test:/var/lib/postgresql/data
+
 volumes:
   postgres-data:
+    external: false
+  postgres-data-test:
     external: false

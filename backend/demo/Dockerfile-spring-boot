@@ -1,0 +1,12 @@
+FROM adoptopenjdk/openjdk11:alpine
+RUN mkdir build
+ENV CONTACT_DATABASE_URL jdbc:postgresql://postgresdb:5432/contactdb
+ENV CONTACT_DATABASE_USERNAME admin
+ENV CONTACT_DATABASE_PASSWORD password123
+ENV CONTACT_JWT_SECRET rm'@!N=Ke@^p8VTA2ZRK^nMDQX5Uvm@m'D&]{!Vr?G;2?XhbC:Qa#9#eMLN\}x3?JR3.2zr^v)gYF~8\:8>:XfB:Ww75N/emt9Yj[bQMNCWwW\J?N,nvH.<2\.r^w]*e^vgak)X"v8H`MH/7"2E`,~k!n<vE-wD3g9JWPy;CrY*.Kd2_D])=><D?YhBaSua5hW%{2]_FVXzb9`8FH~b[X3jzVER&:jw2<=c38=>L/zBq`}C6tT*cCSVC~c]-L}&/
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} /build/app.jar
+WORKDIR /build
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
