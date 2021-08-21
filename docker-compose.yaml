@@ -5,8 +5,6 @@ services:
     build:
       context: ./backend/demo
       dockerfile: Dockerfile-spring-boot
-    ports:
-      - "8080:8080"
     depends_on: 
       - postgresdb
 
@@ -25,6 +23,15 @@ services:
 #      - "5432:5432"
 #    volumes:
 #      - postgres-data-test:/var/lib/postgresql/data
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-react
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - backend
 
 volumes:
   postgres-data:
