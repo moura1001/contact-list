@@ -19,7 +19,7 @@ import com.example.demo.model.dto.AccountDto;
 import com.example.demo.model.dto.TokenDto;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 	
 	@Autowired

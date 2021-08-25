@@ -29,7 +29,7 @@ public class AuthenticationControllerTest {
 	@Test
 	public void deveRetornarStatus400QuandoDadosDeAutenticacaoEstiveremIncorretos() {
 		try {
-			URI uri = new URI("/auth");
+			URI uri = new URI("/api/auth");
 			String json = "{\"email\":\"invalid@email.com\",\"password\":\"654321\"}";
 			
 			mockMvc
@@ -48,7 +48,7 @@ public class AuthenticationControllerTest {
 	@Test
 	public void deveRetornarStatus200QuandoDadosDeAutenticacaoEstiveremCorretos() {
 		try {
-			URI uri = new URI("/auth");
+			URI uri = new URI("/api/auth");
 			String json = "{\"email\":\"account@email.com\",\"password\":\"147258\"}";
 			
 			mockMvc

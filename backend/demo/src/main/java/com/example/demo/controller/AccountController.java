@@ -24,7 +24,7 @@ import com.example.demo.model.repository.AccountRepository;
 import com.example.demo.model.repository.ContactRepository;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/api/accounts")
 public class AccountController {
 	
 	@Autowired

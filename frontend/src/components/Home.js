@@ -10,9 +10,8 @@ class Home extends Component {
   }
   componentDidMount(){
     const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.get('/contacts', { headers: {"Authorization" : `${token.type} ${token.token}`} })
+    axios.get('/api/contacts', { headers: {"Authorization" : `${token.type} ${token.token}`} })
       .then(res =>{
-        console.log(res);
         this.setState({
           contacts: res.data.content
         });
@@ -20,7 +19,7 @@ class Home extends Component {
   }
   deleteContact = (id) => {
     const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.delete(`/contacts/${id}`, { headers: {"Authorization" : `${token.type} ${token.token}`} });
+    axios.delete(`/api/contacts/${id}`, { headers: {"Authorization" : `${token.type} ${token.token}`} });
     const contacts = this.state.contacts.filter(contact => {
       return contact.id !== id;
     });
@@ -30,8 +29,7 @@ class Home extends Component {
   }
   addContact = (contact) => {
     const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.post('/contacts', contact, { headers: {"Authorization" : `${token.type} ${token.token}`} }).then(res =>{
-      //console.log(res);
+    axios.post('/api/contacts', contact, { headers: {"Authorization" : `${token.type} ${token.token}`} }).then(res =>{
       const newContact = res.data;
       const contacts = [...this.state.contacts, newContact];
       this.setState({
@@ -41,10 +39,8 @@ class Home extends Component {
   }
   editContact = (id, contact) => {
     const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.put(`/contacts/${id}`, contact, { headers: {"Authorization" : `${token.type} ${token.token}`} }).then(res => {
-      //console.log(res);
+    axios.put(`/api/contacts/${id}`, contact, { headers: {"Authorization" : `${token.type} ${token.token}`} }).then(res => {
       const editContact = res.data;
-      //console.log(editContact);
       const contacts = this.state.contacts.slice();
       const index = contacts.map(function(x) {return x.id;}).indexOf(id);
       contacts[index] = editContact;

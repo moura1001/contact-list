@@ -27,7 +27,6 @@ class FormUser extends Component {
     });
   }
   handleSubmit = (e) => {
-    console.log(this.state);
     let user = {
       email: this.state.email, password: this.state.password
     };

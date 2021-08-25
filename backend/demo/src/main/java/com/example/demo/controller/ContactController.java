@@ -32,7 +32,7 @@ import com.example.demo.model.entity.Account;
 import com.example.demo.model.entity.Contact;
 
 @RestController
-@RequestMapping("/contacts")
+@RequestMapping("/api/contacts")
 public class ContactController {
 	
 	@Autowired

@@ -10,12 +10,9 @@ const User = (props) => {
   const handleSubmitLogin = (user, handleResults) => {
     let results = {};
 
-    axios.post('/auth', user).then(res => {
-      console.log(res);
+    axios.post('/api/auth', user).then(res => {
       const userLogin = res.data;
-      console.log(userLogin);
       localStorage.setItem("contactUserToken", JSON.stringify(userLogin));
-      console.log(JSON.parse(localStorage.getItem("contactUserToken")));
       props.history.push("/contacts");
 
     }).catch((error) => {
@@ -27,12 +24,8 @@ const User = (props) => {
   const handleSubmitRegister = (user, handleResults) => {
     let results = {};
 
-    axios.post('/accounts', user).then(res => {
-      console.log(res);
-      const userRegister = res.data;
-      console.log(userRegister);
-
-    }).catch((error) => {
+    axios.post('/api/accounts', user).then()
+    .catch((error) => {
       console.log({ ...error });
       results["error"] = "This email is already registered";
       handleResults(results);
