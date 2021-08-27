@@ -41,7 +41,7 @@ class AddContact extends Component {
   }
   render() {
     return (
-      <Box margin={2} align="center" >
+      <Box margin={2} align="center" flex="1" >
         <React.Fragment>
           <form>
             <Grid container spacing={2} align="center">

@@ -3,6 +3,7 @@ import NavBar from './components/NavBar';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import User from './components/User/User';
+import NotFound from './components/NotFound';
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={User}/>
             <Route path='/contacts' component={Home}/>
+            <Route path='*' component={NotFound}/>
           </Switch>
           <NavBar title="" />
         </div>

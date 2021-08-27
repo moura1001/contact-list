@@ -3,10 +3,14 @@ import axios from 'axios';
 import Container from '@material-ui/core/Container';
 import TableContact from './Contact/TableContact';
 import AddContact from './Contact/AddContact';
+import IconButton from '@material-ui/core/IconButton';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import Error from './Error';
 
 class Home extends Component {
   state = {
-    contacts: []
+    contacts: [],
+    error: null
   }
   componentDidMount(){
     const token = JSON.parse(localStorage.getItem("contactUserToken"));
@@ -16,6 +20,12 @@ class Home extends Component {
           contacts: res.data.content
         });
       })
+      .catch(err => {
+        console.log(err.message);
+        this.setState({
+          error: err.message
+        });
+      });
   }
   deleteContact = (id) => {
     const token = JSON.parse(localStorage.getItem("contactUserToken"));
@@ -49,6 +59,11 @@ class Home extends Component {
       })
     });
   }
+  handleExit = () => {
+    console.log("Logout");
+    localStorage.setItem("contactUserToken", JSON.stringify({type:"",token:""}));
+    this.props.history.push("/");
+  }
   render(){
     const { contacts } = this.state
     const contactList = contacts.length ? (
@@ -59,9 +74,22 @@ class Home extends Component {
     );
 
     return(
-      <Container>
-        <AddContact addContact={this.addContact} />
-        {contactList}
+      <Container style={{ minHeight: '80vh', justifyContent: "space-between"}}>
+        {this.state.error && <Error message={this.state.error} />}
+        {!this.state.error &&
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <AddContact addContact={this.addContact} />
+            <div style={{ alignSelf: 'flex-start' }}>
+              <IconButton type="button" onClick={this.handleExit}>
+                <PowerSettingsNewIcon fontSize="large" />
+                Exit
+              </IconButton>
+            </div>
+          </div>
+          {contactList}
+        </div>
+        }
       </Container>
     )
   }

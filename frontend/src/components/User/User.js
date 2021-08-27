@@ -24,19 +24,17 @@ const User = (props) => {
   const handleSubmitRegister = (user, handleResults) => {
     let results = {};
 
-    axios.post('/api/accounts', user).then()
-    .catch((error) => {
-      console.log({ ...error });
-      results["error"] = "This email is already registered";
-      handleResults(results);
-    });
-
-    if (Object.keys(results).length === 0) {
+    axios.post('/api/accounts', user).then(res => {
       results["ok"] = "Account successfully registered";
-    }
+    })
+    .catch(err => {
+      console.log({ ...err });
+      results["error"] = "This email is already registered";
+    })
+    .finally(() => handleResults(results));
   }
   return (
-    <Box margin={8} align="center" >
+    <Box margin={8} style={{ minHeight: '60vh', justifyContent: "space-between"}} >
       <Grid container spacing={2} align="center">
         <FormUser title="Login" buttonImage={ExitToAppIcon}
           handleSubmit={handleSubmitLogin} />
