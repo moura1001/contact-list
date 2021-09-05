@@ -10,13 +10,12 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <NavBar title="Contact List" />
+          <NavBar />
           <Switch>
             <Route exact path='/' component={User}/>
             <Route path='/contacts' component={Home}/>
             <Route path='*' component={NotFound}/>
           </Switch>
-          <NavBar title="" />
         </div>
       </BrowserRouter>
     );

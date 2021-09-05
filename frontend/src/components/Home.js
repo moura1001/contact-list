@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Container from '@material-ui/core/Container';
 import TableContact from './Contact/TableContact';
 import AddContact from './Contact/AddContact';
 import IconButton from '@material-ui/core/IconButton';
@@ -74,7 +73,7 @@ class Home extends Component {
     );
 
     return(
-      <Container style={{ minHeight: '80vh', justifyContent: "space-between"}}>
+      <div className="home container">
         {this.state.error && <Error message={this.state.error} />}
         {!this.state.error &&
         <div>
@@ -90,7 +89,7 @@ class Home extends Component {
           {contactList}
         </div>
         }
-      </Container>
+      </div>
     )
   }
 }

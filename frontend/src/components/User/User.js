@@ -1,6 +1,4 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import FormUser from './FormUser';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -15,8 +13,7 @@ const User = (props) => {
       localStorage.setItem("contactUserToken", JSON.stringify(userLogin));
       props.history.push("/contacts");
 
-    }).catch((error) => {
-      console.log({ ...error });
+    }).catch(err => {
       results["error"] = "Incorrect email or password";
       handleResults(results);
     });
@@ -28,21 +25,23 @@ const User = (props) => {
       results["ok"] = "Account successfully registered";
     })
     .catch(err => {
-      console.log({ ...err });
       results["error"] = "This email is already registered";
     })
     .finally(() => handleResults(results));
   }
   return (
-    <Box margin={8} style={{ minHeight: '60vh', justifyContent: "space-between"}} >
-      <Grid container spacing={2} align="center">
-        <FormUser title="Login" buttonImage={ExitToAppIcon}
-          handleSubmit={handleSubmitLogin} />
-
-        <FormUser title="Register" buttonImage={PersonAddIcon}
-          handleSubmit={handleSubmitRegister} />
-      </Grid>
-    </Box>
+    <div className="user-forms container">
+      <div className="row">
+        <div className="col s12 m6">
+          <FormUser title="Login" buttonImage={ExitToAppIcon}
+            handleSubmit={handleSubmitLogin} />
+        </div>
+        <div className="col s12 m5 offset-m1">
+          <FormUser title="Register" buttonImage={PersonAddIcon}
+            handleSubmit={handleSubmitRegister} />
+        </div>
+      </div>
+    </div>
   )
 }
 
