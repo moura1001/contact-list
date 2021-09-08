@@ -1,48 +1,30 @@
 import React from 'react';
-import axios from 'axios';
-import FormUser from './FormUser';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import SigIng from './SignIn';
+import SignUp from './SignUp';
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 const User = (props) => {
-  const handleSubmitLogin = (user, handleResults) => {
-    let results = {};
-
-    axios.post('/api/auth', user).then(res => {
-      const userLogin = res.data;
-      localStorage.setItem("contactUserToken", JSON.stringify(userLogin));
-      props.history.push("/contacts");
-
-    }).catch(err => {
-      results["error"] = "Incorrect email or password";
-      handleResults(results);
-    });
-  }
-  const handleSubmitRegister = (user, handleResults) => {
-    let results = {};
-
-    axios.post('/api/accounts', user).then(res => {
-      results["ok"] = "Account successfully registered";
-    })
-    .catch(err => {
-      results["error"] = "This email is already registered";
-    })
-    .finally(() => handleResults(results));
-  }
+  const { signedIn } = props;
+  if (signedIn) return <Redirect to='/contacts' />
   return (
     <div className="user-forms container">
       <div className="row">
         <div className="col s12 m6">
-          <FormUser title="Login" buttonImage={ExitToAppIcon}
-            handleSubmit={handleSubmitLogin} />
+          <SigIng />
         </div>
-        <div className="col s12 m5 offset-m1">
-          <FormUser title="Register" buttonImage={PersonAddIcon}
-            handleSubmit={handleSubmitRegister} />
+        <div className="col s12 m6">
+          <SignUp />
         </div>
       </div>
     </div>
   )
 }
 
-export default User
+const mapStateToProps = (state) => {
+  return{
+    signedIn: state.auth.signedIn
+  }
+}
+
+export default connect(mapStateToProps)(User)

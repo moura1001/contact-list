@@ -7,7 +7,8 @@ import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import FormContactValidation from '../../validation/FormContactValidation';
+import { connect } from 'react-redux';
+import { editContact, deleteContact } from '../../store/actions/contactActions';
 
 class RowContact extends Component {
   state = {
@@ -15,8 +16,7 @@ class RowContact extends Component {
     email: this.props.contact.email,
     address: this.props.contact.address,
     telephone: this.props.contact.telephone,
-    open: false,
-    errors: {}
+    open: false
   }
   setOpen = () => {
     const open = !this.state.open;
@@ -31,30 +31,23 @@ class RowContact extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-
     const contact = {
       name: this.state.name, email: this.state.email,
       address: this.state.address, telephone: this.state.telephone
     };
-
-    const errors = FormContactValidation(contact);
-    this.setState({
-      errors: errors
-    });
-
-    if (Object.keys(errors).length === 0) {
-      //console.log(contact);
-      this.props.editContact(this.props.contact.id, contact);
-      this.setOpen();
-    }
-
+    this.props.editContact(this.props.contact.id, contact);
+    setTimeout(() => {
+      // Delay this action by one second
+      if(!this.props.error) {
+        this.setOpen();
+      }
+    }, 1000)
   }
   handleDelete = () => {
-    //console.log(this.state);
     this.props.deleteContact(this.props.contact.id);
   }
   render() {
-    const { contact } = this.props;
+    const { contact, error } = this.props;
     return (
       <React.Fragment>
         <TableRow>
@@ -83,25 +76,21 @@ class RowContact extends Component {
                       <label htmlFor="name">Name</label>
                       <input type="text" id="name" onChange={this.handleChange} required
                         value={this.state.name} />
-                      <span style={{ color: "red" }}>{this.state.errors["name"]}</span>
                     </div>
                     <div className="col s12 m3">
                       <label htmlFor="email">Email</label>
                       <input type="text" id="email" onChange={this.handleChange} required
                         value={this.state.email} />
-                      <span style={{ color: "red" }}>{this.state.errors["email"]}</span>
                     </div>
                     <div className="col s12 m3">
                       <label htmlFor="address">Address</label>
                       <input type="text" id="address" onChange={this.handleChange} required
                         value={this.state.address} />
-                      <span style={{ color: "red" }}>{this.state.errors["address"]}</span>
                     </div>
                     <div className="col s12 m3">
                       <label htmlFor="telephone">Telephone</label>
                       <input type="text" id="telephone" onChange={this.handleChange} required
                         value={this.state.telephone} />
-                      <span style={{ color: "red" }}>{this.state.errors["telephone"]}</span>
                     </div>
                   </div>
                   <div className="row">
@@ -117,6 +106,9 @@ class RowContact extends Component {
                         <CloseIcon />
                       </IconButton>
                     </div>
+                    <div className="red-text center">
+                      { error ? <p>{error}</p> : null }
+                    </div>
                   </div>
                 </form>
               </div>
@@ -128,4 +120,17 @@ class RowContact extends Component {
   }
 }
 
-export default RowContact
+const mapStateToProps = (state) => {
+  return{
+    error: state.contact.error
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    editContact: (id, contact) => dispatch(editContact(id, contact)),
+    deleteContact: (id) => dispatch(deleteContact(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RowContact)

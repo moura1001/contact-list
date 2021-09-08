@@ -19,7 +19,7 @@ const NotFound = (props) => {
           endIcon={<RefreshIcon />}
           onClick={() => props.history.push("/")}
         >
-          Retry with login
+          Retry
         </Button>
       </div>
     </Container>

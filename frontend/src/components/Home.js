@@ -1,97 +1,48 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import TableContact from './Contact/TableContact';
 import AddContact from './Contact/AddContact';
-import IconButton from '@material-ui/core/IconButton';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
-import Error from './Error';
+import { connect } from 'react-redux';
+import { getAllContacts } from '../store/actions/contactActions';
+import { signOut } from '../store/actions/authActions';
+import { Redirect } from 'react-router-dom';
 
 class Home extends Component {
-  state = {
-    contacts: [],
-    error: null
-  }
   componentDidMount(){
-    const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.get('/api/contacts', { headers: {"Authorization" : `${token.type} ${token.token}`} })
-      .then(res =>{
-        this.setState({
-          contacts: res.data.content
-        });
-      })
-      .catch(err => {
-        console.log(err.message);
-        this.setState({
-          error: err.message
-        });
-      });
-  }
-  deleteContact = (id) => {
-    const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.delete(`/api/contacts/${id}`, { headers: {"Authorization" : `${token.type} ${token.token}`} });
-    const contacts = this.state.contacts.filter(contact => {
-      return contact.id !== id;
-    });
-    this.setState({
-      contacts
-    })
-  }
-  addContact = (contact) => {
-    const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.post('/api/contacts', contact, { headers: {"Authorization" : `${token.type} ${token.token}`} }).then(res =>{
-      const newContact = res.data;
-      const contacts = [...this.state.contacts, newContact];
-      this.setState({
-        contacts
-      })
-    });
-  }
-  editContact = (id, contact) => {
-    const token = JSON.parse(localStorage.getItem("contactUserToken"));
-    axios.put(`/api/contacts/${id}`, contact, { headers: {"Authorization" : `${token.type} ${token.token}`} }).then(res => {
-      const editContact = res.data;
-      const contacts = this.state.contacts.slice();
-      const index = contacts.map(function(x) {return x.id;}).indexOf(id);
-      contacts[index] = editContact;
-      this.setState({
-        contacts
-      })
-    });
-  }
-  handleExit = () => {
-    console.log("Logout");
-    localStorage.setItem("contactUserToken", JSON.stringify({type:"",token:""}));
-    this.props.history.push("/");
+    this.props.getAllContacts();
   }
   render(){
-    const { contacts } = this.state
+    const { contacts, signedIn, authError } = this.props;
+    if (!signedIn || authError){
+      this.props.signOut();
+      return <Redirect to='/' />
+    }
     const contactList = contacts.length ? (
-      <TableContact contacts={contacts} deleteContact={this.deleteContact}
-        editContact={this.editContact} />
+      <TableContact contacts={contacts} />
     ) : (
       <div className="center">No contacts to show</div>
     );
-
     return(
       <div className="home container">
-        {this.state.error && <Error message={this.state.error} />}
-        {!this.state.error &&
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <AddContact addContact={this.addContact} />
-            <div style={{ alignSelf: 'flex-start' }}>
-              <IconButton type="button" onClick={this.handleExit}>
-                <PowerSettingsNewIcon fontSize="large" />
-                Exit
-              </IconButton>
-            </div>
-          </div>
-          {contactList}
-        </div>
-        }
+        <AddContact />
+        {contactList}
       </div>
     )
   }
 }
 
-export default Home
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contact.contacts,
+    authError: state.contact.authError,
+    signedIn: state.auth.signedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch)=> {
+  return {
+    getAllContacts: () => dispatch(getAllContacts()),
+    signOut: () => dispatch(signOut())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

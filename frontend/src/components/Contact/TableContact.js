@@ -7,11 +7,10 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import RowContact from './RowContact';
 
-const TableContact = ({ contacts, deleteContact, editContact }) => {
+const TableContact = ({ contacts }) => {
   const rows = contacts.map(contact => {
     return (
-      <RowContact key={contact.id} contact={contact}
-        deleteContact={deleteContact} editContact={editContact} />
+      <RowContact key={contact.id} contact={contact} />
     )
   })
 
