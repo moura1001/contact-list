@@ -18,5 +18,5 @@ Backend:
 
 Frontend:
  - JavaScript
- - React
+ - React e Redux
 
