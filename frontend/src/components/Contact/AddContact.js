@@ -19,7 +19,7 @@ class AddContact extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.createContact(this.state);
-    if(!this.props.error) {
+    if(!this.props.addError) {
       this.setState({
         name: "",
         email: "",
@@ -29,7 +29,7 @@ class AddContact extends Component {
     }
   }
   render() {
-    const { error } = this.props;
+    const { addError } = this.props;
     return (
       <div className="user-form-add container">
         <form className="white" onSubmit={this.handleSubmit}>
@@ -65,7 +65,7 @@ class AddContact extends Component {
                 <AddIcon fontSize="large" />
               </IconButton>
               <div className="red-text center">
-                { error ? <p>{error}</p> : null }
+                { addError ? <p>{addError}</p> : null }
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ class AddContact extends Component {
 
 const mapStateToProps = (state) => {
   return{
-    error: state.contact.error
+    addError: state.contact.addError
   }
 }
 

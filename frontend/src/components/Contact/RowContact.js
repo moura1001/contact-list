@@ -37,8 +37,7 @@ class RowContact extends Component {
     };
     this.props.editContact(this.props.contact.id, contact);
     setTimeout(() => {
-      // Delay this action by one second
-      if(!this.props.error) {
+      if(!this.props.editError) {
         this.setOpen();
       }
     }, 1000)
@@ -47,7 +46,7 @@ class RowContact extends Component {
     this.props.deleteContact(this.props.contact.id);
   }
   render() {
-    const { contact, error } = this.props;
+    const { contact, editError } = this.props;
     return (
       <React.Fragment>
         <TableRow>
@@ -107,7 +106,7 @@ class RowContact extends Component {
                       </IconButton>
                     </div>
                     <div className="red-text center">
-                      { error ? <p>{error}</p> : null }
+                      { editError ? <p>{editError}</p> : null }
                     </div>
                   </div>
                 </form>
@@ -122,7 +121,7 @@ class RowContact extends Component {
 
 const mapStateToProps = (state) => {
   return{
-    error: state.contact.error
+    editError: state.contact.editError
   }
 }
 

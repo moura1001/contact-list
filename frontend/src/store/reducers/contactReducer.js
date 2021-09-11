@@ -1,21 +1,21 @@
 const initState = {
   contacts: [],
-  error: null,
+  addError: null,
+  editError: null,
+  deleteError: null,
   authError: false
 }
 
 const contactReducer = (state = initState, action) => {
   switch (action.type) {
     case 'AUTH_ERROR':
-      console.log('auth error: ', action.err);
+      console.log('auth error: ', action.err.msg);
       return {
-        ...state,
-        authError: true
+        authError: action.err.status
       }
     case 'GETALL_SUCCESS':
       console.log('get contacts success');
       return {
-        ...state,
         contacts: action.contacts,
         authError: false
       }
@@ -23,15 +23,14 @@ const contactReducer = (state = initState, action) => {
       console.log('create contact success', action.newContact);
       const newContacts = [...state.contacts, action.newContact];
       return {
-        ...state,
         contacts: newContacts,
-        error: null
+        addError: null
       }
     case 'CREATE_CONTACT_ERROR':
       console.log('create contact error: ', action.err);
       return {
         ...state,
-        error: action.err
+        addError: action.err
       };
     case 'EDIT_CONTACT_SUCCESS':
       const editContact = action.contact;
@@ -42,13 +41,13 @@ const contactReducer = (state = initState, action) => {
       return {
         ...state,
         contacts: editContacts,
-        error: null
+        editError: null
       }
     case 'EDIT_CONTACT_ERROR':
       console.log('edit contact error: ', action.err);
       return {
         ...state,
-        error: action.err
+        editError: action.err
       };
     case 'DELETE_CONTACT_SUCCESS':
       console.log('delete contact success: ', action.id);
@@ -56,15 +55,14 @@ const contactReducer = (state = initState, action) => {
         return contact.id !== action.id;
       });
       return {
-        ...state,
         contacts,
-        error: null
+        deleteError: null
       }
     case 'DELETE_CONTACT_ERROR':
       console.log('delete contact error: ', action.err);
       return {
         ...state,
-        error: action.err
+        deleteError: action.err
       };
     default:
       return state;
